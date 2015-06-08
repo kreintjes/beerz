@@ -26,3 +26,13 @@ meteor
 ```
 
 Visit [localhost:3000](http://localhost:3000).
+
+Component structure
+-------------------
+
+```
+- TodoApp
+    - TodoForm
+    - TodoList
+        - TodoItem
+```

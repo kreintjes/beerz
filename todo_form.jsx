@@ -4,13 +4,13 @@ TodoForm = React.createClass({
 
     render: function() {
         return (
-            <form className="todoForm" onSubmit={this.handleSubmit}>
+            <form className="todoForm" onSubmit={this.submit}>
                 <input type="text" placeholder="Type to add new tasks" ref="text" />
             </form>
         );
     },
 
-    handleSubmit: function(e) {
+    submit: function(e) {
         e.preventDefault();
 
         // Get values from input element
@@ -20,7 +20,7 @@ TodoForm = React.createClass({
         }
 
         // Delegate task subnmission to TodoApp component
-        this.props.onTaskSubmit({
+        this.props.onSubmit({
             text: text
         })
 

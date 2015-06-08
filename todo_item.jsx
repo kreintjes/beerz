@@ -10,6 +10,6 @@ TodoItem = React.createClass({
                 <h3>{this.props.task.text} {createdAt}</h3>
             </div>
         )
-    }
-
+    },
+    
 });

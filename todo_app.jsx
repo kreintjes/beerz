@@ -16,7 +16,7 @@ TodoApp = ReactMeteor.createClass({
         return (
             <div className="todoApp">
                 <h1>Todo List</h1>
-                <TodoForm onTaskSubmit={this.handleTaskSubmit}/>
+                <TodoForm onSubmit={this.submitTask}/>
                 <TodoList tasks={this.state.tasks}/>
             </div>
         );
@@ -38,7 +38,7 @@ TodoApp = ReactMeteor.createClass({
         };
     },
 
-    handleTaskSubmit: function(task) {
+    submitTask: function(task) {
 
         // Add createdAt and Insert task into Meteor Collection
         var newTask = {

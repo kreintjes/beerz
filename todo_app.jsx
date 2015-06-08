@@ -17,19 +17,13 @@ TodoApp = ReactMeteor.createClass({
             <div className="todoApp">
                 <h1>Todo List</h1>
                 <TodoForm onSubmit={this.submitTask}/>
-                <TodoList tasks={this.state.tasks}/>
+                <TodoList tasks={this.state.tasks} onToggle={this.toggleTask}/>
             </div>
         );
     },
 
     getInitialState: function() {
-        return {tasks: [{
-            text: "Task 1",
-            createdAt: new Date()
-        },{
-            text: "Task 2",
-            createdAt: new Date()
-        }]};
+        return {tasks: []};
     },
 
     getMeteorState: function() {
@@ -43,7 +37,8 @@ TodoApp = ReactMeteor.createClass({
         // Add createdAt and Insert task into Meteor Collection
         var newTask = {
             text: task.text,
-            createdAt: new Date()
+            createdAt: new Date(),
+            done: false
         };
         Tasks.insert(newTask);
 
@@ -55,6 +50,21 @@ TodoApp = ReactMeteor.createClass({
         var tasks = this.state.tasks;
         var newTasks = tasks.concat([newTask]);
         this.setState({tasks: newTasks});
+    },
+
+    toggleTask: function(taskId) {
+        var task = Tasks.findOne(taskId);
+        Tasks.update({_id: taskId}, {
+            $set: {done: !task.done}
+        });
+
+        // Optimistic updating
+        var tasks = this.state.tasks;
+        var task = _.find(tasks, function(task){
+            return task._id === taskId;
+        });
+        task.done = !task.done;
+        this.setState({tasks: tasks});
     }
 
 });
@@ -65,7 +75,8 @@ if (Meteor.isServer) {
             for (var i = 0; i < 5; i++) {
                 Tasks.insert({
                     text: "Task " + i,
-                    createdAt: new Date()
+                    createdAt: new Date(),
+                    done: false
                 });
             }
         }

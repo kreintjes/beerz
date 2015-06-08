@@ -4,15 +4,16 @@ TodoList = React.createClass({
     mixins: [ReactMeteor.Mixin],
 
     render: function() {
+        var _this = this;
         var todoItemsNodes = this.props.tasks.map(function (task) {
             return (
-                <TodoItem task={task} />
+                <TodoItem task={task} onToggle={_this.props.onToggle} />
             );
         });
         return (
-            <div className="todoList">
+            <ul className="todoList collection">
                 {todoItemsNodes}
-            </div>
+            </ul>
         );
     }
 

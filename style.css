@@ -1,1 +1,23 @@
 /* CSS declarations go here */
+
+.task.done .header{
+    text-decoration: line-through;
+}
+
+.taks.done .remove{
+    cursor: pointer;
+}
+
+.ui.toggle.checkbox input[type="checkbox"]:checked ~ .box,
+.ui.toggle.checkbox input[type="checkbox"]:checked ~ label,
+.ui.toggle.checkbox input[type="radio"]:checked ~ .box,
+.ui.toggle.checkbox input[type="radio"]:checked ~ label {
+    color: #d95c5c;
+}
+
+.ui.toggle.checkbox input[type="checkbox"]:checked ~ .box:before,
+.ui.toggle.checkbox input[type="checkbox"]:checked ~ label:before,
+.ui.toggle.checkbox input[type="radio"]:checked ~ .box:before,
+.ui.toggle.checkbox input[type="radio"]:checked ~ label:before {
+    background-color: #d95c5c;
+}

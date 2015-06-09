@@ -15,9 +15,8 @@ TodoApp = ReactMeteor.createClass({
     render: function() {
         return (
             <div className="todoApp">
-                <h1>Todo List</h1>
                 <TodoForm onSubmit={this.submitTask}/>
-                <TodoList tasks={this.state.tasks} onToggle={this.toggleTask}/>
+                <TodoList tasks={this.state.tasks} onToggle={this.toggleTask} onRemove={this.removeTask}/>
             </div>
         );
     },
@@ -26,19 +25,27 @@ TodoApp = ReactMeteor.createClass({
         return {tasks: []};
     },
 
+    // The state is reactively updated by Meteor.
     getMeteorState: function() {
         return {
-          tasks: Tasks.find().fetch()
+          tasks: Tasks.find({}, {
+              sort: {
+                  done: 1,
+                  important: -1,
+                  createdAt: -1
+              }
+          }).fetch()
         };
     },
 
     submitTask: function(task) {
 
-        // Add createdAt and Insert task into Meteor Collection
+        // Add createdAt and Insert task into Meteor Collection.
         var newTask = {
             text: task.text,
             createdAt: new Date(),
-            done: false
+            done: false,
+            important: task.important || false
         };
         Tasks.insert(newTask);
 
@@ -46,7 +53,11 @@ TodoApp = ReactMeteor.createClass({
         // update the collection and let React reactively update the todo list
         // without worrying about the latency.
         // When not using Meteor it's a good idea to optimistically add the task
-        // item to the list without waiting for the request to complete
+        // item to the list without waiting for the request to complete.
+        //
+        // Note that the sorting of the tasks is not implemented in the
+        // optimistic updating code. Instead it is handled by the reactive
+        // getMeteorState.
         var tasks = this.state.tasks;
         var newTasks = tasks.concat([newTask]);
         this.setState({tasks: newTasks});
@@ -65,10 +76,22 @@ TodoApp = ReactMeteor.createClass({
         });
         task.done = !task.done;
         this.setState({tasks: tasks});
+    },
+
+    removeTask: function(taskId) {
+        Tasks.remove(taskId);
+
+        // Optimistic updating
+        var tasks = this.state.tasks;
+        tasks = _.reject(tasks, function(task) {
+            return task._id === taskId;
+        });
+        this.setState({tasks: tasks});
     }
 
 });
 
+// Seeds
 if (Meteor.isServer) {
     Meteor.startup(function () {
         if (Tasks.find().count() === 0) {
@@ -76,7 +99,8 @@ if (Meteor.isServer) {
                 Tasks.insert({
                     text: "Task " + i,
                     createdAt: new Date(),
-                    done: false
+                    done: false,
+                    important: _.isEven(i)
                 });
             }
         }

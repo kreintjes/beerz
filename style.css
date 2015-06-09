@@ -4,8 +4,9 @@
     text-decoration: line-through;
 }
 
-.taks.done .remove{
+.task .remove, .task i.checkmark, .task i.checkmark.disabled {
     cursor: pointer;
+    pointer-events: all;
 }
 
 .ui.toggle.checkbox input[type="checkbox"]:checked ~ .box,

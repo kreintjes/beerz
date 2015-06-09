@@ -17,12 +17,14 @@ TodoItem = React.createClass({
             (<i className="checkmark icon large "></i>) :
             (<i className="checkmark icon large disabled"></i>);
 
-        // Set a class when the task is done
+        // Define the css classes using the classSet addon.
         var itemClasses = cx("ui task item", this.props.task.done ? 'done' : '')
-
-        // Set a class when the task is important
-        var segmentClasses = cx("ui segment", this.props.task.important ?
-            "red" : "");
+        var segmentClasses = cx("ui segment",
+            this.props.task.important ? "red" : "");
+        var textClasses = cx("ui middle aligned header",
+            this.props.task.done ? "disabled" : "");
+        var removeClasses = cx("middle aligned ui right floated icon remove \
+            large", this.props.task.done ? "disabled" : "");
 
         return (
             <div className={itemClasses}>
@@ -31,11 +33,10 @@ TodoItem = React.createClass({
                         onClick={this.handleToggle}>
                         {checkedButtonLabel}
                     </div>
-                    <span className="middle aligned header">
+                    <span className={textClasses}>
                         {this.props.task.text}
                     </span>
-                    <i className="middle aligned ui right floated icon remove \
-                        large" onClick={this.handleRemove}></i>
+                    <i className={removeClasses} onClick={this.handleRemove}></i>
                 </div>
             </div>
         )

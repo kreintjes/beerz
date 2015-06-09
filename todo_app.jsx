@@ -100,7 +100,7 @@ if (Meteor.isServer) {
                     text: "Task " + i,
                     createdAt: new Date(),
                     done: false,
-                    important: _.isEven(i)
+                    important: (i % 2) === 1
                 });
             }
         }

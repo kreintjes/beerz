@@ -43,6 +43,7 @@ TodoApp = ReactMeteor.createClass({
         // Add createdAt and Insert task into Meteor Collection.
         var newTask = {
             text: task.text,
+            amount: task.amount,
             createdAt: new Date(),
             done: false,
             important: task.important || false

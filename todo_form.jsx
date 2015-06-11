@@ -8,6 +8,8 @@ TodoForm = React.createClass({
                 <div className="two fields">
                     <div className="field">
                         <input type="text" placeholder="Type to add new tasks" ref="text" />
+                        <input type="number" placeholder="Amount" ref="amount" />
+                        <input type="submit" name="Submit" value="Add" />
                     </div>
                     <div className="field">
                         <div className="ui toggle checkbox">
@@ -27,19 +29,22 @@ TodoForm = React.createClass({
 
         // Get values from form elements
         var text =  React.findDOMNode(this.refs.text).value.trim();
+        var amount =  React.findDOMNode(this.refs.amount).value;
         var important = checkbox.checkbox("is checked");
-        if (!text) {
+        if (!text || !amount) {
             return;
         }
 
         // Delegate task subnmission to TodoApp component
         this.props.onSubmit({
             text: text,
+            amount: amount,
             important: important
         })
 
         // Reset form elements
         React.findDOMNode(this.refs.text).value = "";
+        React.findDOMNode(this.refs.amount).value = "";
         checkbox.checkbox("uncheck");
         return;
     },
@@ -49,5 +54,4 @@ TodoForm = React.createClass({
     componentDidMount: function() {
         $(React.findDOMNode(this)).find(".ui.checkbox").checkbox();
     }
-
 });

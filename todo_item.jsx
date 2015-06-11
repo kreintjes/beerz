@@ -25,6 +25,7 @@ TodoItem = React.createClass({
             this.props.task.done ? "disabled" : "");
         var removeClasses = cx("middle aligned ui right floated icon remove \
             large", this.props.task.done ? "disabled" : "");
+        var amountStyles = { marginLeft: '1em' }
 
         return (
             <div className={itemClasses}>
@@ -35,6 +36,9 @@ TodoItem = React.createClass({
                     </div>
                     <span className={textClasses}>
                         {this.props.task.text}
+                    </span>
+                    <span className="ui middle aligned" style={amountStyles}>
+                        (amount {this.props.task.amount || 1})
                     </span>
                     <i className={removeClasses} onClick={this.handleRemove}></i>
                 </div>
